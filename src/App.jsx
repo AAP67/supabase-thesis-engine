@@ -10,7 +10,7 @@ const ARCHETYPES = {
   "data-analytics": { label: "Data / Analytics", fit: 5, products: ["DB"], color: "#a78bfa" },
   "hardware-iot": { label: "Hardware / IoT", fit: 2, products: ["DB"], color: "#94a3b8" },
   "biotech-deep": { label: "Biotech / Deep Tech", fit: 1, products: [], color: "#64748b" },
-  "protocol-infra": { label: "Protocol / Infra", fit: 0, products: [], color: "#334155" },
+  "protocol-infra": { label: "Protocol / Infra", fit: 1, products: ["DB"], color: "#334155" },
 };
 
 const ALL_PRODUCTS = ["DB", "Auth", "RLS", "Storage", "pgvector", "Edge"];
@@ -293,6 +293,29 @@ export default function App() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Archetype Scoring Reference */}
+      <div style={{ background: "#1c1917", border: "1px solid #292524", borderRadius: 12, padding: "16px 20px", marginBottom: 18 }}>
+        <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 10, color: "#a8a29e" }}>Archetype Fit Scoring</div>
+        <div style={{ fontSize: 10, color: "#57534e", marginBottom: 12, lineHeight: 1.5 }}>
+          Fit score reflects how many Supabase products the archetype would use and how deeply. Higher score = more products, deeper integration, stronger product-market fit.
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+          {Object.values(ARCHETYPES).sort((a, b) => b.fit - a.fit).map((a, i) => (
+            <div key={i} style={{ background: "#0c0a09", borderRadius: 8, padding: "10px 12px", border: "1px solid #292524" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: a.fit >= 8 ? "#3ecf8e" : a.fit >= 5 ? "#facc15" : "#ef4444", fontFamily: "'DM Mono', monospace" }}>{a.fit}</span>
+              </div>
+              <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                {a.products.length ? a.products.map(p => (
+                  <span key={p} style={{ fontSize: 8, padding: "1px 5px", borderRadius: 3, background: "#1c1917", color: "#78716c", border: "1px solid #292524" }}>{p}</span>
+                )) : <span style={{ fontSize: 8, color: "#44403c" }}>No typical usage</span>}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div style={{ background: "#1c1917", border: "1px solid #292524", borderRadius: 12, padding: "16px 20px", marginBottom: 18 }}>
